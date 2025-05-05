@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16
+    container_name: todo-db
+    environment:
+      POSTGRES_DB: tododb
+      POSTGRES_USER: todo
+      POSTGRES_PASSWORD: todo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-app
+    environment:
+      - DATASOURCES_DEFAULT_URL=jdbc:postgresql://db:5432/tododb
+      - DATASOURCES_DEFAULT_USERNAME=todo
+      - DATASOURCES_DEFAULT_PASSWORD=todo
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+volumes:
+  pgdata:
