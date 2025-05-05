@@ -1,5 +1,13 @@
-FROM eclipse-temurin:21-jre
+# Build stage
+FROM ghcr.io/graalvm/native-image-community:21.0.2-ol8-20240116 AS build
 WORKDIR /app
-COPY build/libs/learn-micronaut-0.1-all.jar app.jar
+RUN microdnf install -y findutils unzip
+COPY . .
+RUN ./gradlew nativeCompile
+
+# Run stage
+FROM debian:bookworm-slim
+WORKDIR /app
+COPY --from=build /app/build/native/nativeCompile/learn-micronaut .
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["/app/learn-micronaut"]
