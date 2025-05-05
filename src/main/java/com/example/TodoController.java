@@ -2,7 +2,6 @@ package com.example;
 
 import io.micronaut.http.annotation.*;
 import io.micronaut.http.HttpResponse;
-import java.util.Optional;
 
 @Controller("/todos")
 public class TodoController {
