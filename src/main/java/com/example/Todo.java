@@ -1,19 +1,20 @@
 package com.example;
 
-import jakarta.persistence.*;
+import io.micronaut.data.annotation.MappedEntity;
+import io.micronaut.data.annotation.Id;
+import io.micronaut.data.annotation.GeneratedValue;
+import io.micronaut.data.annotation.GeneratedValue.Type;
+import io.micronaut.serde.annotation.Serdeable;
 
-@Entity
-@Table(name = "todos")
+@Serdeable // 新增這行，讓 Todo 支援序列化/反序列化
+@MappedEntity("todos")
 public class Todo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(Type.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String title;
-
     private String description;
-
     private boolean completed = false;
 
     // getters and setters
